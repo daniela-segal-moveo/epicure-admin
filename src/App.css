@@ -1,0 +1,15 @@
+@font-face {
+  font-family: "admin-font";
+  src: url("../src/assets/fonts/LibreFranklin-Bold.ttf");
+}
+
+html{
+  overflow-x: hidden;
+}
+body {
+  font-family: 'Helvetica Neue';
+  margin: 0px;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
