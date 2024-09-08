@@ -45,6 +45,7 @@ export const RestaurantModal = ({
   const [chefError, setChefError] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
+  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     dispatch(getAllChefs());
@@ -73,6 +74,7 @@ export const RestaurantModal = ({
       });
     }
   }, [mode, RestaurantToEdit]);
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -145,11 +147,11 @@ export const RestaurantModal = ({
     if (selectedFile) {
       try {
         const uploadedFileUrl = await uploadFile(selectedFile);
-        setFile(selectedFile); 
-        setFileUrl(uploadedFileUrl); 
+        setFile(selectedFile);
+        setFileUrl(uploadedFileUrl);
         setNewRestaurant((prevState) => ({
           ...prevState,
-          imageUrl: uploadedFileUrl, 
+          imageUrl: uploadedFileUrl,
         }));
       } catch (error) {
         console.error("Error handling file change:", error);
@@ -185,7 +187,11 @@ export const RestaurantModal = ({
             style={{ display: "none" }}
           />
           <label htmlFor="file-input">
-            <Button variant="contained" sx ={{bgcolor:"#132442"}} component="span">
+            <Button
+              variant="contained"
+              sx={{ bgcolor: "#132442" }}
+              component="span"
+            >
               Upload Image
             </Button>
           </label>
@@ -207,7 +213,9 @@ export const RestaurantModal = ({
           getOptionLabel={(option: any) => option.name}
           value={chefs.find((chef) => chef.name === newRestaurant.chef) || null}
           onChange={handleChefChange}
-          onInputChange={handleInputChange}
+          onInputChange={(event: any, value: string) =>
+            handleInputChange(value)
+          }
           renderInput={(params) => (
             <TextField
               {...params}
@@ -245,7 +253,11 @@ export const RestaurantModal = ({
           }}
         />
         <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button variant="contained" sx ={{bgcolor:"#132442"}} onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#132442" }}
+            onClick={handleSubmit}
+          >
             {mode === "add" ? <AddIcon /> : "Update"}
           </Button>
         </Box>
