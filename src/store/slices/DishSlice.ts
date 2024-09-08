@@ -35,7 +35,6 @@ const dishSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getAllDishes.fulfilled, (state, action: any) => {
-        console.log(action.payload)
         state.dishes = action.payload;
         state.status = "succeeded";
       })
@@ -58,7 +57,7 @@ const dishSlice = createSlice({
         state.status = "loading";
       })
       .addCase(getDish.fulfilled, (state, action: any) => {
-        state.selectedDish = action.payload.id;
+        state.selectedDish = action.payload._id;
         state.status = "succeeded";
       })
       .addCase(getDish.rejected, (state, action) => {
@@ -97,7 +96,7 @@ const dishSlice = createSlice({
       })
       .addCase(deleteDish.fulfilled, (state, action: any) => {
         const index = state.dishes.findIndex(
-          (dish) => dish._id === action.payload.id
+          (dish) => dish._id === action.payload._id
         );
         if (index !== -1) {
           state.dishes.splice(index, 1);

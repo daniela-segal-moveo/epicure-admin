@@ -19,26 +19,26 @@ class DishesAdapter {
 
   static async getDish(id: string): Promise<Dish> {
     const res = await HttpClient.get(DishesAdapter.endpoint.getDishById, id);
-    return res.data as Dish;
+    return res as Dish;
   }
 
   static async addDish(newDish: Dish): Promise<Dish> {
     const res = await HttpClient.add(DishesAdapter.endpoint.addDish, newDish);
-    return res.data as Dish;
+    return res as Dish;
   }
 
   static async updateDish(updatedDish: Dish): Promise<Dish> {
     const res = await HttpClient.update(
       DishesAdapter.endpoint.updateDish,
-      updatedDish.id,
+      updatedDish._id,
       updatedDish
     );
-    return res.data as Dish;
+    return res as Dish;
   }
 
   static async deleteDish(id: string): Promise<Dish> {
     const res = await HttpClient.delete(DishesAdapter.endpoint.deleteDish, id);
-    return res.data as Dish;
+    return res as Dish;
   }
 
   static async getSignatureDishes(): Promise<Dish[]> {

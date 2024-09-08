@@ -18,7 +18,7 @@ import {
 } from "../../../../store/thunks/DishThunk";
 import { DataTable } from "../DataTable/DataTable";
 
-// Define columns based on Chef model properties
+
 const createColumns = (
   onDelete: (id: string) => void,
   onEdit: (id: string) => void
@@ -26,7 +26,7 @@ const createColumns = (
   {
     field: "id",
     headerName: "ID",
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
     field: "imageUrl",
@@ -56,12 +56,6 @@ const createColumns = (
     renderCell: (params) => `₪${params.value}`,
   },
   {
-    field: "description",
-    headerName: "Description",
-    width: 100,
-    renderCell: (params) => params.value || "No Description",
-  },
-  {
     field: "isSignature",
     headerName: "Signature",
     type: "boolean",
@@ -83,13 +77,13 @@ const createColumns = (
     width: 180,
     type: "dateTime",
     sortable: true,
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
-    field: "restaurantId", // Assuming 'restaurant' holds the restaurant name
+    field: "restaurantId", 
     headerName: "Restaurant",
-    width: 200, // Adjust width as needed
-    renderCell: (params) => params.value.name || "No Restaurant",
+    width: 200, 
+    renderCell: (params) => params.value?.name || "No Restaurant",
   },
   {
     field: "handle",
@@ -111,10 +105,13 @@ const createColumns = (
 
 export const DishesTable = () => {
   const handleDeleteDish = async (id: string) => {
-    try {
-      await dispatch(deleteDish(id));
-    } catch (error) {
-      console.error("Error deleting dish:", error);
+    const confirmed = window.confirm("Are you sure you want to delete this dish?");
+    if (confirmed) {
+      try {
+        await dispatch(deleteDish(id));
+      } catch (error) {
+        console.error("Error deleting dish:", error);
+      }
     }
   };
 
@@ -167,8 +164,6 @@ export const DishesTable = () => {
       ...dish,
     };
   });
-
-  console.log(transformedDishes)
 
   return (
     <div style={{ height: 600 }}>

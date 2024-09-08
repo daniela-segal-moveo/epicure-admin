@@ -18,7 +18,7 @@ import {
 import { RestaurantModal } from "./RestaurantModal/RestuarantModal";
 import { DataTable } from "../DataTable/DataTable";
 
-// Define columns based on Chef model properties
+
 const createColumns = (
   onDelete: (id: string) => void,
   onEdit: (id: string) => void
@@ -26,7 +26,7 @@ const createColumns = (
   {
     field: "id",
     headerName: "ID",
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
     field: "imageUrl",
@@ -43,13 +43,12 @@ const createColumns = (
     field: "chef",
     headerName: "Chef",
     width: 180,
-    renderCell: (params) => params.value?.name || "No Chef", // Adjust this as needed
+    renderCell: (params) => params.value?.name || "No Chef", 
   },
   {
     field: "dishes",
     headerName: "Dishes",
     width: 200,
-    hide: true,
     renderCell: (params) => {
       const dishes = params.value as { name: string }[];
       return dishes ? dishes.map((dish) => dish.name).join(", ") : "";
@@ -73,7 +72,7 @@ const createColumns = (
     width: 180,
     type: "dateTime",
     sortable: true,
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
     field: "handle",
@@ -83,11 +82,11 @@ const createColumns = (
     renderCell: (params) => (
       <div>
         <IconButton onClick={() => onEdit(params.row.id)}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => onDelete(params.row.id)}>
-        <DeleteIcon />
-      </IconButton>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => onDelete(params.row.id)}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     ),
   },
@@ -96,7 +95,12 @@ const createColumns = (
 export const RestaurantTable = () => {
   const handleDeleteRestaurant = async (id: string) => {
     try {
-      await dispatch(deleteRestaurant(id));
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this restaurant?"
+      );
+      if (confirmed) {
+        await dispatch(deleteRestaurant(id));
+      }
     } catch (error) {
       console.error("Error deleting chef:", error);
     }
@@ -150,10 +154,10 @@ export const RestaurantTable = () => {
   };
 
   const transformedRestaurants = restaurants?.map((restaurant) => {
-      return {
-        id: restaurant._id,
-        ...restaurant,
-      };
+    return {
+      id: restaurant._id,
+      ...restaurant,
+    };
   });
 
   return (

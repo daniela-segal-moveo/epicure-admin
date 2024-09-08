@@ -15,8 +15,8 @@ interface EditChefModelProps {
   open: boolean;
   onSubmit: (chefData: any) => void;
   onClose: () => void;
-  chefToEdit?: any; // Optional prop for editing mode
-  mode: "add" | "edit"; // Prop to distinguish between add and edit modes
+  chefToEdit?: any; 
+  mode: "add" | "edit"; 
 }
 
 const AddChefForm = ({
@@ -32,7 +32,7 @@ const AddChefForm = ({
     bio: "",
     imageUrl: "",
     restaurants: [] as string[],
-    isWeekChef: false, // Add boolean field for "Is Week Chef"
+    isWeekChef: false, 
   });
 
   useEffect(() => {
@@ -43,7 +43,7 @@ const AddChefForm = ({
         bio: chefToEdit.bio,
         imageUrl: chefToEdit.imageUrl,
         restaurants: chefToEdit.restaurants,
-        isWeekChef: chefToEdit.isWeekChef ?? false, // Use nullish coalescing
+        isWeekChef: chefToEdit.isWeekChef ?? false, 
       });
     } else {
       setNewChef({
@@ -57,7 +57,7 @@ const AddChefForm = ({
     }
   }, [mode, chefToEdit]);
 
-  // Handle change for text fields and checkbox
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
     setNewChef((prevState) => ({

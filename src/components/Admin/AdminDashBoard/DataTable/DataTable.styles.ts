@@ -70,7 +70,7 @@ export const StyledDataGrid = styled(DataGrid)({
     overflowX: "hidden",
   },
   "& .justify-center": {
-    justifyContent: 'center', // Center alignment for specific columns
+    justifyContent: 'center', 
   },
   "& .flex-end": {
 
