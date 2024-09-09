@@ -13,17 +13,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getAllChefs } from "../../../../../store/thunks/ChefThunk";
 
-interface Chef {
-  _id: string;
-  name: string;
-}
-
 interface EditChefModelProps {
   open: boolean;
   onSubmit: (chefData: any) => void;
   onClose: () => void;
-  RestaurantToEdit?: any; // Optional prop for editing mode
-  mode: "add" | "edit"; // Prop to distinguish between add and edit modes
+  RestaurantToEdit?: any; 
+  mode: "add" | "edit"; 
 }
 
 export const RestaurantModal = ({
@@ -88,24 +83,21 @@ export const RestaurantModal = ({
         ...prevState,
         chef: value.name,
       }));
-      setChefError(""); // Clear error if a valid chef is selected
+      setChefError(""); 
     }
   };
 
   const handleInputChange = (
     value: any
   ) => {
-    // Update the chef field with the input value
     setNewRestaurant((prevState) => ({
       ...prevState,
       chef: value,
     }));
-    // Clear error message if user types something
     setChefError("");
   };
 
   const validateChef = (chefName: string) => {
-    // Check if the chef exists in the list
     return chefs.some((chef) => chef.name === chefName);
   };
 
@@ -116,10 +108,10 @@ export const RestaurantModal = ({
       )?._id;
       const restaurantData = {
         ...newRestaurant,
-        chef: chefId || "", // Convert name to ID
+        chef: chefId || "",
       };
       onSubmit(restaurantData);
-      setChefError(""); // Clear error on successful submission
+      setChefError(""); 
     } else {
       setChefError("Chef does not exist on our website");
     }
@@ -129,7 +121,7 @@ export const RestaurantModal = ({
     <StyledModal
       open={open}
       onClose={() => {
-        setChefError(""); // Clear error on modal close
+        setChefError(""); 
         onClose();
       }}
     >
@@ -192,8 +184,8 @@ export const RestaurantModal = ({
           value={newRestaurant.stars}
           onChange={handleChange}
           inputProps={{
-            min: 0, // Optional: Set minimum value
-            max: 5, // Set maximum value
+            min: 0, 
+            max: 5, 
           }}
         />
         <Box mt={2} display="flex" justifyContent="flex-end">

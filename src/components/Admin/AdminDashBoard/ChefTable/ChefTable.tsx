@@ -11,14 +11,13 @@ import {
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import EditChefModel from "./EditChefModel/EditChefModel";
+import ChefModal from "./ChefModal/ChefModal";
 import {
   StyledProfileImgDiv,
   StyledProfileImg,
-} from "../DataTable/DataTable.styles"
+} from "../DataTable/DataTable.styles";
 import { DataTable } from "../DataTable/DataTable";
 
-// Define columns based on Chef model properties
 const createColumns = (
   onDelete: (id: string) => void,
   onEdit: (id: string) => void
@@ -26,7 +25,7 @@ const createColumns = (
   {
     field: "id",
     headerName: "ID",
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
     field: "imageUrl",
@@ -43,7 +42,7 @@ const createColumns = (
   {
     field: "restaurants",
     headerName: "Restaurants",
-    hide:true,
+    hide: true,
     width: 160,
     renderCell: (params) => {
       return (params.value as { name: string }[])
@@ -58,12 +57,12 @@ const createColumns = (
     type: "boolean",
   },
   {
-    field: "createdAt", // The field for creation date
+    field: "createdAt", 
     headerName: "Created At",
     width: 180,
     type: "dateTime",
     sortable: true,
-    hide: true, // Hide this column from the DataGrid
+    hide: true, 
   },
   {
     field: "handle",
@@ -73,11 +72,11 @@ const createColumns = (
     renderCell: (params) => (
       <div>
         <IconButton onClick={() => onEdit(params.row.id)}>
-        <EditIcon />
-      </IconButton>
-      <IconButton onClick={() => onDelete(params.row.id)}>
-        <DeleteIcon />
-      </IconButton>
+          <EditIcon />
+        </IconButton>
+        <IconButton onClick={() => onDelete(params.row.id)}>
+          <DeleteIcon />
+        </IconButton>
       </div>
     ),
   },
@@ -86,7 +85,12 @@ const createColumns = (
 export const ChefTable = () => {
   const handleDeleteChef = async (id: string) => {
     try {
-      await dispatch(deleteChef(id)); // Call the delete action with the chef id
+      const confirmed = window.confirm(
+        "Are you sure you want to delete this chef?"
+      );
+      if (confirmed) {
+        await dispatch(deleteChef(id)); 
+      }
     } catch (error) {
       console.error("Error deleting chef:", error);
     }
@@ -135,7 +139,6 @@ export const ChefTable = () => {
     }
   };
 
-  // Transform data to ensure consistency
   const transformedChefs = chefs?.map((chef) => {
     return {
       id: chef._id,
@@ -152,7 +155,7 @@ export const ChefTable = () => {
         setModalMode={setModalMode}
         setModalOpen={setModalOpen}
       />
-      <EditChefModel
+      <ChefModal
         open={modalOpen}
         onSubmit={handleAddChef}
         onClose={() => setModalOpen(false)}
