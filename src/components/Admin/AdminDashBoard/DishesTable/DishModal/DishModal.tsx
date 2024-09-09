@@ -7,6 +7,8 @@ import {
   Checkbox,
   Autocomplete,
   Chip,
+  Card,
+  CardMedia,
 } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -14,6 +16,7 @@ import { StyledBox, StyledModal } from "../../DataTable/Modal/Modal.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getAllRestaurants } from "../../../../../store/thunks/RestaurantThunk";
+import axios from "../../../../../services/index";
 
 interface EditDishModelProps {
   open: boolean;
@@ -58,6 +61,8 @@ export const DishModal = ({
   const [categories] = useState<string[]>(["spicy", "veg", "vegetarian"]);
   const [restaurantError, setRestaurantError] = useState<string>("");
   const [ingredientInput, setIngredientInput] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [fileUrl, setFileUrl] = useState<string>("");
 
   useEffect(() => {
     if (mode === "edit" && DishToEdit) {
@@ -91,8 +96,7 @@ export const DishModal = ({
     dispatch(getAllRestaurants());
   }, [newDish]);
 
-  useEffect(() => {
-  }, [newDish.category]);
+  useEffect(() => {}, [newDish.category]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value, type, checked } = e.target;
@@ -181,6 +185,43 @@ export const DishModal = ({
     });
   };
 
+  const uploadFile = async (file: File): Promise<string> => {
+    const formData = new FormData();
+    formData.append("image", file);
+
+    try {
+      const response = await axios.post("/api/upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      return response.data.fileUrl;
+    } catch (error) {
+      console.error("Error uploading file:", error);
+      throw error;
+    }
+  };
+
+  const handleFileChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const selectedFile = event.target.files?.[0];
+    if (selectedFile) {
+      try {
+        const uploadedFileUrl = await uploadFile(selectedFile);
+        setFile(selectedFile); 
+        setFileUrl(uploadedFileUrl); 
+        setNewDish((prevState) => ({
+          ...prevState,
+          imageUrl: uploadedFileUrl, 
+        }));
+      } catch (error) {
+        console.error("Error handling file change:", error);
+      }
+    }
+  };
+
   return (
     <StyledModal
       open={open}
@@ -200,15 +241,34 @@ export const DishModal = ({
           value={newDish.name}
           onChange={handleChange}
         />
-        <TextField
-          label="Image URL"
-          name="imageUrl"
-          variant="outlined"
-          fullWidth
-          margin="normal"
-          value={newDish.imageUrl}
-          onChange={handleChange}
-        />
+        <Box mt={2} mb={2}>
+          <input
+            id="file-input"
+            type="file"
+            accept="image/*"
+            onChange={handleFileChange}
+            style={{ display: "none" }}
+          />
+          <label htmlFor="file-input">
+            <Button
+              variant="contained"
+              sx={{ bgcolor: "#132442" }}
+              component="span"
+            >
+              Upload Image
+            </Button>
+          </label>
+          {fileUrl && (
+            <Card sx={{ maxWidth: 345, mt: 2 }}>
+              <CardMedia
+                component="img"
+                height="140"
+                image={fileUrl}
+                alt="Uploaded Image"
+              />
+            </Card>
+          )}
+        </Box>
         <TextField
           label="Ingredient"
           variant="outlined"
@@ -301,7 +361,11 @@ export const DishModal = ({
           label="Signature Dish"
         />
         <Box mt={2} display="flex" justifyContent="flex-end">
-          <Button variant="contained" color="primary" onClick={handleSubmit}>
+          <Button
+            variant="contained"
+            sx={{ bgcolor: "#132442" }}
+            onClick={handleSubmit}
+          >
             {mode === "add" ? <AddIcon /> : "Update"}
           </Button>
         </Box>

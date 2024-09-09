@@ -7,7 +7,7 @@ import {
   StyledLogOutButton,
 } from "./SideBar.styles";
 import { Typography } from "@mui/material";
-import epicureLogo from "../../../../public/assets/images/epicureLogo.png";
+import epicureLogo from "/assets/images/epicureLogo.png";
 import RamenDiningIcon from "@mui/icons-material/RamenDining";
 import Face2Icon from "@mui/icons-material/Face2";
 import RestaurantIcon from "@mui/icons-material/Restaurant";
