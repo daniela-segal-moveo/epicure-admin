@@ -12,7 +12,7 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { StyledBox, StyledModal } from "../../DataTable/Modal/Modal.styles";
-import axios from "../../../../../services/index";
+import {axiosInstance} from "../../../../../services/index";
 
 interface EditChefModelProps {
   open: boolean;
@@ -79,7 +79,7 @@ const AddChefForm = ({
     formData.append("image", file);
 
     try {
-      const response = await axios.post("/api/upload", formData, {
+      const response = await axiosInstance.post("/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -3,16 +3,16 @@ import { createUser, login } from "../thunks/UserThunk";
 import { User } from "../models/user.model";
 
 interface UserState {
-  status: 'idle' | 'loading' | 'succeeded' | 'failed';
+  status: "idle" | "loading" | "succeeded" | "failed";
   user?: User; // Adjust type based on your user data structure
   token?: string; // Assuming token is stored here after login
   error?: string;
 }
 
 const initialState: UserState = {
-  status: 'idle',
+  status: "idle",
   user: undefined,
-  token: undefined,
+  token: sessionStorage.getItem("token") || undefined,
   error: undefined,
 };
 
@@ -23,7 +23,8 @@ const UserSlice = createSlice({
     setLogout(state) {
       state.user = undefined;
       state.token = undefined;
-      state.status = 'idle';
+      state.status = "idle";
+      sessionStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
@@ -46,6 +47,8 @@ const UserSlice = createSlice({
         state.user = action.payload.user; // Adjust based on your payload structure
         state.token = action.payload.token; // Assuming token is returned
         state.status = "succeeded";
+        sessionStorage.setItem("token", action.payload.token);
+        console.log("Token stored in sessionStorage:", action.payload.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";

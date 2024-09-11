@@ -14,7 +14,7 @@ import { StyledBox, StyledModal } from "../../DataTable/Modal/Modal.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getAllChefs } from "../../../../../store/thunks/ChefThunk";
-import axios from "../../../../../services/index";
+import {axiosInstance} from "../../../../../services/index";
 
 interface EditChefModelProps {
   open: boolean;
@@ -45,7 +45,6 @@ export const RestaurantModal = ({
   const [chefError, setChefError] = useState("");
   const [file, setFile] = useState<File | null>(null);
   const [fileUrl, setFileUrl] = useState<string>("");
-  const [inputValue, setInputValue] = useState("");
 
   useEffect(() => {
     dispatch(getAllChefs());
@@ -127,7 +126,7 @@ export const RestaurantModal = ({
     formData.append("image", file);
 
     try {
-      const response = await axios.post("/api/upload", formData, {
+      const response = await axiosInstance.post("/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

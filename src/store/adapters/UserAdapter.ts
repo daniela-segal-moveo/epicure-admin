@@ -1,4 +1,4 @@
-import axios from "../../services/index";
+import {axiosInstance} from "../../services/index";
 import { User } from "../models/user.model";
 
 class UserAdapter {
@@ -8,7 +8,7 @@ class UserAdapter {
   };
 
   static async createUser(userData: User) {
-    const response = await axios.post(
+    const response = await axiosInstance.post(
       UserAdapter.endpoint.createUser,
       userData
     );
@@ -16,7 +16,7 @@ class UserAdapter {
   }
 
   static async LogIn(loginData: { email: string; password: string }) {
-    const response = await axios.post(UserAdapter.endpoint.logIn, loginData);
+    const response = await axiosInstance.post(UserAdapter.endpoint.logIn, loginData);
     return response.data;
   }
 }

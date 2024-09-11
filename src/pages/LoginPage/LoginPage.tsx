@@ -1,5 +1,5 @@
 // src/components/LoginPage.tsx
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { InputAdornment, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import epicureLogo from "/assets/images/epicureLogo.png";
@@ -13,20 +13,36 @@ import {
   StyledTextField,
   StyledTypography,
 } from "./LoginPage.styles";
+import { AppDispatch } from "../../store/store";
+import { useDispatch } from "react-redux";
+import { login } from "../../store/thunks/UserThunk";
 
-const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState("");
+const LoginPage = () => {
+  const dispatch: AppDispatch = useDispatch();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
-      navigate("/dashboard"); 
+      setError(""); 
+      const resultAction = await dispatch(login({ email, password }));
+    
+      if (login.fulfilled.match(resultAction)) {
+        navigate("/dashboard");
+      } 
+      else if (login.rejected.match(resultAction)) {
+        setError(resultAction.payload as string || "Invalid email / password");
+      } 
     } catch (err) {
       setError("Invalid credentials");
     }
   };
+
+  useEffect(() => {
+    console.log(error);
+  }, [error]);
 
   return (
     <StyledContainer maxWidth="xs">
@@ -38,8 +54,10 @@ const LoginPage: React.FC = () => {
           label="Username"
           variant="outlined"
           fullWidth
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={email}
+          onChange={(e) => {setEmail(e.target.value);
+            setError("")
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -54,7 +72,9 @@ const LoginPage: React.FC = () => {
           variant="outlined"
           fullWidth
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {setPassword(e.target.value);
+            setError("")
+          }}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">
@@ -63,7 +83,7 @@ const LoginPage: React.FC = () => {
             ),
           }}
         />
-        {error && <Typography color="error">{error}</Typography>}
+       {error && <Typography sx={{ fontSize: "15px", margin:"0", padding: "0" }} color="error">{error}</Typography>}
         <StyledButton variant="contained" onClick={handleLogin} fullWidth>
           SIGN IN
         </StyledButton>

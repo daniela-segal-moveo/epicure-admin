@@ -16,7 +16,7 @@ import { StyledBox, StyledModal } from "../../DataTable/Modal/Modal.styles";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "../../../../../store/store";
 import { getAllRestaurants } from "../../../../../store/thunks/RestaurantThunk";
-import axios from "../../../../../services/index";
+import {axiosInstance} from "../../../../../services/index";
 
 interface EditDishModelProps {
   open: boolean;
@@ -190,7 +190,7 @@ export const DishModal = ({
     formData.append("image", file);
 
     try {
-      const response = await axios.post("/api/upload", formData, {
+      const response = await axiosInstance.post("/api/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
