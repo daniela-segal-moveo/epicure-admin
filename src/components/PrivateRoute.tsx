@@ -9,7 +9,6 @@ interface PrivateRouteProps {
 
 const PrivateRoute: React.FC<PrivateRouteProps> = ({ element }) => {
   const token = useSelector((state: RootState) => state.user.token);
-  console.log('Token in PrivateRoute:', token); // Add this line to check the token value
 
   const isAuthenticated = !!token;
   return isAuthenticated ? element : <Navigate to="/" />;

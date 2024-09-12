@@ -12,14 +12,14 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import AddIcon from "@mui/icons-material/Add";
 import { StyledBox, StyledModal } from "../../DataTable/Modal/Modal.styles";
-import {axiosInstance} from "../../../../../services/index";
+import { axiosInstance } from "../../../../../services/index";
 
 interface EditChefModelProps {
   open: boolean;
   onSubmit: (chefData: any) => void;
   onClose: () => void;
   chefToEdit?: any;
-  mode: "add" | "edit";
+  mode: "add" | "edit" | "details";
 }
 
 const AddChefForm = ({
@@ -41,7 +41,7 @@ const AddChefForm = ({
   const [fileUrl, setFileUrl] = useState<string>("");
 
   useEffect(() => {
-    if (mode === "edit" && chefToEdit) {
+    if ((mode === "edit" || mode === "details") && chefToEdit) {
       setNewChef({
         _id: chefToEdit._id,
         name: chefToEdit.name,
@@ -99,11 +99,11 @@ const AddChefForm = ({
     if (selectedFile) {
       try {
         const uploadedFileUrl = await uploadFile(selectedFile);
-        setFile(selectedFile); 
-        setFileUrl(uploadedFileUrl); 
+        setFile(selectedFile);
+        setFileUrl(uploadedFileUrl);
         setNewChef((prevState) => ({
           ...prevState,
-          imageUrl: uploadedFileUrl, 
+          imageUrl: uploadedFileUrl,
         }));
       } catch (error) {
         console.error("Error handling file change:", error);
@@ -117,10 +117,10 @@ const AddChefForm = ({
         <IconButton
           onClick={onClose}
           sx={{ position: "absolute", top: "10px", right: "10px" }}
-        >
-          <CloseIcon />
-        </IconButton>
-        <p>{mode == "add" ? "Add New Chef" : "Edit Chef"}</p>
+        ></IconButton>
+        <p style={{ display: mode === "details" ? "none" : "flex" }}>
+          {mode == "add" ? "Add New Chef" : "Edit Chef"}
+        </p>
         <TextField
           label="Name"
           name="name"
@@ -129,6 +129,7 @@ const AddChefForm = ({
           margin="normal"
           value={newChef.name}
           onChange={handleChange}
+          InputProps={{ readOnly: mode === "details" }}
         />
         <TextField
           label="Bio"
@@ -138,8 +139,16 @@ const AddChefForm = ({
           margin="normal"
           value={newChef.bio}
           onChange={handleChange}
+          InputProps={{ readOnly: mode === "details" }}
+          multiline
+          minRows={4} // Adjust based on the average size of your bio
+          maxRows={10} // Adjust to limit the maximum height of the textarea
         />
-        <Box mt={2} mb={2}>
+        <Box
+          mt={2}
+          mb={2}
+          sx={{ display: mode === "details" ? "none" : "flex" }}
+        >
           <input
             id="file-input"
             type="file"
@@ -156,24 +165,12 @@ const AddChefForm = ({
               Upload Image
             </Button>
           </label>
-          {fileUrl && (
-            <Card sx={{ maxWidth: 345, mt: 2 }}>
-              <CardMedia
-                component="img"
-                height="140"
-                image={fileUrl}
-                alt="Uploaded Image"
-              />
-            </Card>
-          )}
         </Box>
-        {fileUrl && (
-          <img
-            src={fileUrl}
-            alt="Chef"
-            style={{ width: "100px", height: "100px" }}
-          />
-        )}
+        <img
+          src={fileUrl ? fileUrl : newChef.imageUrl}
+          alt="Chef"
+          style={{ width: "100px", height: "100px" }}
+        />
 
         <FormControlLabel
           sx={{ alignSelf: "flex-start", marginTop: "15px" }}
@@ -182,11 +179,17 @@ const AddChefForm = ({
               name="isWeekChef"
               checked={newChef.isWeekChef}
               onChange={handleChange}
+              disabled={mode === "details"}
             />
           }
           label="Week Chef"
         />
-        <Box mt={2} display="flex" justifyContent="flex-end">
+        <Box
+          mt={2}
+          display="flex"
+          justifyContent="flex-end"
+          sx={{ display: mode === "details" ? "none" : "flex" }}
+        >
           <Button
             variant="contained"
             sx={{ bgcolor: "#132442" }}

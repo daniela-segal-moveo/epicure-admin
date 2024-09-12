@@ -11,16 +11,20 @@ import {
 import { IconButton } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import ChefModal from "./ChefModal/ChefModal";
 import {
   StyledProfileImgDiv,
   StyledProfileImg,
 } from "../DataTable/DataTable.styles";
 import { DataTable } from "../DataTable/DataTable";
+import useWindowWidth from "../../../../hooks/useWindowWidth";
 
 const createColumns = (
   onDelete: (id: string) => void,
-  onEdit: (id: string) => void
+  onEdit: (id: string) => void,
+  onWatch: (id: string) => void,
+  windoWidth: boolean
 ): GridColDef[] => [
   {
     field: "id",
@@ -31,6 +35,7 @@ const createColumns = (
     field: "imageUrl",
     headerName: "Image",
     width: 100,
+    hide: windoWidth,
     renderCell: (params) => (
       <StyledProfileImgDiv>
         <StyledProfileImg src={params.value} />
@@ -38,7 +43,7 @@ const createColumns = (
     ),
   },
   { field: "name", headerName: "Name", width: 140 },
-  { field: "bio", headerName: "Bio", width: 250 },
+  { field: "bio", hide: windoWidth, headerName: "Bio", width: 250 },
   {
     field: "restaurants",
     headerName: "Restaurants",
@@ -55,6 +60,7 @@ const createColumns = (
     headerName: "Chef of the week",
     width: 150,
     type: "boolean",
+    hide: windoWidth
   },
   {
     field: "createdAt", 
@@ -77,6 +83,9 @@ const createColumns = (
         <IconButton onClick={() => onDelete(params.row.id)}>
           <DeleteIcon />
         </IconButton>
+        {windoWidth&&(<IconButton onClick={()=>{onWatch(params.row.id)}}>
+          <RemoveRedEyeIcon />
+        </IconButton>)}
       </div>
     ),
   },
@@ -105,13 +114,23 @@ export const ChefTable = () => {
     }
   };
 
+  const handleWatchChef = (id: string) => {
+    const chefToEdit = chefs.find((chef) => chef._id === id);
+    if (chefToEdit) {
+      setSelectedChef(chefToEdit);
+      setModalMode("details");
+      setModalOpen(true);
+    }
+  };
+
   const dispatch: AppDispatch = useDispatch();
+  const windowWidth = useWindowWidth() <= 960;
   const { chefs, status } = useSelector((state: RootState) => state.chefs);
   const [columns, setColumns] = useState<GridColDef[]>(
-    createColumns(handleDeleteChef, handleEditChef)
+    createColumns(handleDeleteChef, handleEditChef, handleWatchChef, windowWidth)
   );
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const [modalMode, setModalMode] = useState<"add" | "edit">("add");
+  const [modalMode, setModalMode] = useState<"add" | "edit" | "details">("add");
   const [selectedChef, setSelectedChef] = useState<any>();
 
   useEffect(() => {
@@ -122,7 +141,7 @@ export const ChefTable = () => {
 
   useEffect(() => {
     if (chefs.length > 0) {
-      setColumns(createColumns(handleDeleteChef, handleEditChef));
+      setColumns(createColumns(handleDeleteChef, handleEditChef, handleWatchChef, windowWidth));
     }
   }, [chefs]);
 
@@ -160,7 +179,7 @@ export const ChefTable = () => {
         onSubmit={handleAddChef}
         onClose={() => setModalOpen(false)}
         mode={modalMode}
-        chefToEdit={modalMode === "edit" ? selectedChef : undefined}
+        chefToEdit={modalMode === "edit" || modalMode === "details" ? selectedChef : undefined}
       />
     </div>
   );

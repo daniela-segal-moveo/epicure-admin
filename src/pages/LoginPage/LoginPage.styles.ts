@@ -17,9 +17,13 @@ export const StyledBox = styled(Box)({
   flexDirection: "column",
   alignItems: "center",
   backgroundColor: "white",
-  padding: "40PX",
+  padding: "40px",
   boxShadow: "0px 0px 10px rgba(0,0,0,0.3)",
   width: "600px",
+
+  "@media (max-width:960px)": {
+    width: "80%",
+  },
 });
 
 export const StyledLogo = styled("img")({
@@ -37,27 +41,30 @@ export const StyledTextField = styled(TextField)({
       borderColor: "#132442",
     },
     "&:hover fieldset": {
-      borderColor: "#4A5E73", 
-    "&.Mui-focused fieldset": {
-      borderColor: "#4A5E73", 
+      borderColor: "#4A5E73",
+      "&.Mui-focused fieldset": {
+        borderColor: "#4A5E73",
+      },
     },
-  },
-  "& .MuiInputAdornment-root": {
-    color: "#132442", 
-  },
-  "& .MuiFormLabel-root": {
-    color: "#132442",
-  },
+    "& .MuiInputAdornment-root": {
+      color: "#132442",
+    },
+    "& .MuiFormLabel-root": {
+      color: "#132442",
+    },
     "&.Mui-focused": {
-      color: "#4A5E73", 
+      color: "#4A5E73",
     },
-    fontSize: "16px", 
+    fontSize: "16px",
+  },
+  "@media (max-width:960px)": {
+    width: "90%",
   },
 });
 
 export const StyledButton = styled(Button)({
   marginTop: "20px",
-  backgroundColor: "#4A5E73", 
+  backgroundColor: "#4A5E73",
   color: "white",
   padding: "10px 20px",
   "&:hover": {
@@ -65,6 +72,10 @@ export const StyledButton = styled(Button)({
   },
   width: "60%",
   border: "0px",
+
+  "@media (max-width:960px)": {
+    width: "90%",
+  },
 });
 
 export const StyledTypography = styled(Typography)({
