@@ -16,6 +16,7 @@ import {
 import { AppDispatch } from "../../store/store";
 import { useDispatch } from "react-redux";
 import { login } from "../../store/thunks/UserThunk";
+import { hashPassword } from "../../utils/encrypt";
 
 const LoginPage = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -27,8 +28,10 @@ const LoginPage = () => {
   const handleLogin = async () => {
     try {
       setError(""); 
-      const resultAction = await dispatch(login({ email, password }));
-    
+      const hashedPassword = hashPassword(password);
+      console.log(hashedPassword)
+      const resultAction = await dispatch(login({ email, password: hashedPassword }));
+      
       if (login.fulfilled.match(resultAction)) {
         navigate("/dashboard");
       } 
