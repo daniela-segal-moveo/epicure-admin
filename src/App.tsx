@@ -1,4 +1,4 @@
-import AdminPage from "./pages/AdminPage";
+import AdminPage from "./pages/AdminPage/AdminPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import "./App.css";

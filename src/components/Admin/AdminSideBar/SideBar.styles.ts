@@ -4,7 +4,9 @@ import { styled } from "@mui/system";
 // Define drawer width as a constant
 const drawerWidth = 240; // Adjust as needed
 
-export const StyledDrawer = styled(Drawer)({
+export const StyledDrawer = styled(Drawer, {
+  shouldForwardProp: (prop) => prop !== 'isOpen', // Ensure `isOpen` is not forwarded to the DOM
+})<{ isOpen: boolean }>(({ isOpen }) => ({
   width: drawerWidth,
   flexShrink: 0,
   "& .MuiDrawer-paper": {
@@ -20,7 +22,21 @@ export const StyledDrawer = styled(Drawer)({
   padding: "0px",
   background: "#132442",
   cursor: "pointer",
-});
+
+  "@media (max-width:960px)": {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    width: "100%",
+    zIndex: 1200, // Ensure it overlays above other content
+    "& .MuiDrawer-paper": {
+      width: "100%",
+      height: "70%",
+      transition: "transform 0.3s ease",
+    transform: isOpen ? "translateY(0)" : "translateY(-100%)",
+    },
+  },
+}));
 
 export const StyledToolbar = styled(Toolbar)({
   display: "flex",
@@ -45,17 +61,17 @@ export const StyledLogo = styled("img")({
 });
 
 export const StyledButton = styled(Button)({
-    color:"white",
-    paddingLeft:"30px",
-    paddingTop:"12px",
-    paddingBottom: "12px",
-    justifyContent:"flex-start",
-    alignItems:"center"
-})
+  color: "white",
+  paddingLeft: "30px",
+  paddingTop: "12px",
+  paddingBottom: "12px",
+  justifyContent: "flex-start",
+  alignItems: "center",
+});
 
 export const StyledLogOutButton = styled(Button)({
-    color:"white",
-    marginBottom: "20px",
-    justifyContent:"center",
-    alignItems:"center"
-})
+  color: "white",
+  marginBottom: "20px",
+  justifyContent: "center",
+  alignItems: "center",
+});

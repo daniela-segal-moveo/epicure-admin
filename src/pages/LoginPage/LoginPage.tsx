@@ -29,7 +29,6 @@ const LoginPage = () => {
     try {
       setError(""); 
       const hashedPassword = hashPassword(password);
-      console.log(hashedPassword)
       const resultAction = await dispatch(login({ email, password: hashedPassword }));
       
       if (login.fulfilled.match(resultAction)) {

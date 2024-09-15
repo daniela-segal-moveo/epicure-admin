@@ -48,7 +48,6 @@ const UserSlice = createSlice({
         state.token = action.payload.token; // Assuming token is returned
         state.status = "succeeded";
         sessionStorage.setItem("token", action.payload.token);
-        console.log("Token stored in sessionStorage:", action.payload.token);
       })
       .addCase(login.rejected, (state, action) => {
         state.status = "failed";

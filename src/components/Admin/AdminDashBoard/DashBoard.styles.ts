@@ -16,6 +16,12 @@ export const StyledBox = styled(Box)({
   alignItems: 'center',
   padding: '0 16px',
   boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+ "@media (max-width:960px)": {
+    width: "100%",
+    marginLeft: "0px",
+    position: "absolute", // Change to absolute to stack on top
+    zIndex:0
+  },
 });
 
 export const StyledContainer = styled(Container)({
