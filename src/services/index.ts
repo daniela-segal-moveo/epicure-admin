@@ -3,11 +3,11 @@ import { store } from "../store/store";
 import { setLogout } from "../store/slices/UserSlice";
 
 const axiosInstance = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://3.83.212.127",
 });
 
 const axiosInstanceWithToken = axios.create({
-  baseURL: "http://localhost:3000",
+  baseURL: "http://3.83.212.127",
 });
 
 axiosInstanceWithToken.interceptors.request.use(

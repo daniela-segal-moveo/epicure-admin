@@ -124,7 +124,7 @@ export const ChefTable = () => {
   };
 
   const dispatch: AppDispatch = useDispatch();
-  const windowWidth = useWindowWidth() <= 960;
+  const windowWidth = false;
   const { chefs, status } = useSelector((state: RootState) => state.chefs);
   const [columns, setColumns] = useState<GridColDef[]>(
     createColumns(handleDeleteChef, handleEditChef, handleWatchChef, windowWidth)
