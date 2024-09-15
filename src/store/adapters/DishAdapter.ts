@@ -1,6 +1,6 @@
 import { Dish } from "../models/dish.model";
 import HttpClient from "../../services/HttpsClientService";
-import axios from "../../services/index";
+import {axiosInstance} from "../../services/index";
 
 class DishesAdapter {
   static readonly endpoint = {
@@ -42,7 +42,7 @@ class DishesAdapter {
   }
 
   static async getSignatureDishes(): Promise<Dish[]> {
-    const res = await axios.get(DishesAdapter.endpoint.getSignture);
+    const res = await axiosInstance.get(DishesAdapter.endpoint.getSignture);
     return res.data as Dish[];
   }
 }

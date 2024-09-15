@@ -1,0 +1,23 @@
+import {axiosInstance} from "../../services/index";
+import { User } from "../models/user.model";
+
+class UserAdapter {
+  static readonly endpoint = {
+    createUser: "/api/user/create",
+    logIn: "/api/user/login",
+  };
+
+  static async createUser(userData: User) {
+    const response = await axiosInstance.post(
+      UserAdapter.endpoint.createUser,
+      userData
+    );
+    return response.data;
+  }
+
+  static async LogIn(loginData: { email: string; password: string }) {
+    const response = await axiosInstance.post(UserAdapter.endpoint.logIn, loginData);
+    return response.data;
+  }
+}
+export default UserAdapter;

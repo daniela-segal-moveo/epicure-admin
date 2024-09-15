@@ -1,6 +1,6 @@
 import { Chef } from "../models/chef.model";
 import HttpClient from "../../services/HttpsClientService";
-import axios from "../../services/index";
+import {axiosInstance} from "../../services/index";
 
 class ChefsAdapter {
   static readonly endpoint = {
@@ -42,12 +42,12 @@ class ChefsAdapter {
   }
 
   static async getWeekChef(): Promise<Chef> {
-    const res = await axios.get(ChefsAdapter.endpoint.getWeekChef);
+    const res = await axiosInstance.get(ChefsAdapter.endpoint.getWeekChef);
     return res.data as Chef;
   }
 
   static async updateChefOfTheWeek(id: string): Promise<string> {
-    const res = await axios.post(`${ChefsAdapter.endpoint.getWeekChef}/${id}`);
+    const res = await axiosInstance.post(`${ChefsAdapter.endpoint.getWeekChef}/${id}`);
     return res.data as string;
   }
 }

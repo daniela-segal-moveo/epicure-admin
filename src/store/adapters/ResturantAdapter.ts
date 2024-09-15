@@ -1,6 +1,6 @@
 import { Restaurant } from "../models/restaurant.model";
 import HttpClient from "../../services/HttpsClientService";
-import axios from "../../services/index";
+import {axiosInstance} from "../../services/index";
 
 class RestaurantAdapter {
   static readonly endpoint = {
@@ -52,7 +52,7 @@ class RestaurantAdapter {
   }
 
   static async getPopularRestaurants(): Promise<Restaurant[]> {
-    const res = await axios.get(
+    const res = await axiosInstance.get(
       RestaurantAdapter.endpoint.getPopularRestaurants
     );
     return res.data;
